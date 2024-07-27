@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Image Captioning</title>
+    <link rel="stylesheet" href="/static/index.css">
+</head>
+
+<body>
+    <div class="main_part">
+        <div class = 'caption'><h1>Image Caption Generater</h1></div>
+        <div class = "form">
+            <form action="/generate" method="post" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" value="Upload & Generate Caption">
+            </form>
+        </div>
+        <div id="result">
+            <!-- Caption will be displayed here -->
+        </div>
+        <img id="uploaded_img" src="" alt="Uploaded Image" style="display:none; max-width:400px;">
+        
+        <div class="dynamic">
+            <script>
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    let formData = new FormData(this);
+
+                    fetch('/generate', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('result').innerText = `${data.caption}`;
+                        document.getElementById('uploaded_img').src = URL.createObjectURL(formData.get('file'));
+                        document.getElementById('uploaded_img').style.display = 'block';
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>
+

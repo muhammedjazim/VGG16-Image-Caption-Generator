@@ -1,0 +1,6 @@
+Numpy
+tqdm
+tensorflow
+pillow
+pydot
+matplotlib
